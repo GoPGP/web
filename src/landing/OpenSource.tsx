@@ -52,7 +52,7 @@ export function OpenSource() {
             </p>
 
             <a
-              href="https://github.com/nicaurb/pgpick"
+              href="https://github.com/gopgp/ios"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-900 font-medium transition-colors"

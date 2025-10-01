@@ -48,7 +48,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <a
-                  href="https://github.com/achmel/pgpick"
+                  href="https://github.com/gopgp/ios"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm text-stone-400 hover:text-white transition-colors"

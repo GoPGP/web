@@ -44,7 +44,7 @@ export function Hero() {
                 Coming to App Store
               </a>
               <a
-                href="https://github.com/nicaurb/pgpick"
+                href="https://github.com/gopgp/ios"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-stone-700 hover:border-stone-500 text-stone-300 hover:text-white font-medium transition-colors"

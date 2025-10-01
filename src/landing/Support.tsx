@@ -69,12 +69,12 @@ export function Support() {
                 <div className="text-sm">
                   Report bugs or request features at{' '}
                   <a
-                    href="https://github.com/achmel/pgpick/issues"
+                    href="https://github.com/gopgp/ios/issues"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
                   >
-                    github.com/achmel/pgpick/issues
+                    github.com/gopgp/ios/issues
                   </a>
                   . Public issues help other users too &mdash; preferred channel.
                 </div>
@@ -144,12 +144,12 @@ export function Support() {
                 Lightning/USB-C, and integrating it cleanly with GopenPGP is on
                 the roadmap rather than shipped. Track progress on the{' '}
                 <a
-                  href="https://github.com/achmel/pgpick/issues"
+                  href="https://github.com/gopgp/ios/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
                 >
-                  pgpick issue tracker
+                  goPGP iOS issue tracker
                 </a>
                 .
               </p>

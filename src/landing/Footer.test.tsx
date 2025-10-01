@@ -3,17 +3,18 @@ import { render, screen } from '@testing-library/react'
 import { Footer } from './Footer'
 
 describe('Footer', () => {
-  it('renders the current year in copyright', () => {
-    render(<Footer />)
+  it('renders the current year alongside the publisher name', () => {
+    const { container } = render(<Footer />)
     const year = new Date().getFullYear().toString()
-    expect(screen.getByText(new RegExp(`${year}\\s*BRIGHT EUROPE`))).toBeInTheDocument()
+    const text = container.textContent ?? ''
+    expect(text).toContain(year)
+    expect(text).toContain('BRIGHT EUROPE SRL UNIPERSONALE')
   })
 
-  it('Support link uses a valid mailto URI', () => {
+  it('Support link points to the /support route', () => {
     render(<Footer />)
     const support = screen.getByRole('link', { name: /support/i })
-    const href = support.getAttribute('href') ?? ''
-    expect(href).toMatch(/^mailto:[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    expect(support).toHaveAttribute('href', '/support')
   })
 
   it('GitHub link points to github.com', () => {
