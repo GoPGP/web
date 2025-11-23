@@ -1,8 +1,18 @@
 import { Shield, Github } from 'lucide-react'
+import type { Ref } from 'react'
+import { useAnalytics } from '@/lib/analytics'
 
-export function Footer() {
+const GITHUB_URL = 'https://github.com/gopgp/ios'
+const BRIGHT_URL = 'https://bright-eu.com'
+const GPL_URL = 'https://www.gnu.org/licenses/gpl-3.0.html'
+
+const currentPath = () =>
+  typeof window !== 'undefined' ? window.location.pathname : '/'
+
+export function Footer({ sectionRef }: { sectionRef?: Ref<HTMLElement> }) {
+  const { trackCta, trackOutbound, trackNav } = useAnalytics()
   return (
-    <footer className="bg-stone-950 border-t border-stone-800">
+    <footer ref={sectionRef} className="bg-stone-950 border-t border-stone-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
@@ -23,17 +33,29 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5">
               <li>
-                <a href="#engine" className="text-sm text-stone-400 hover:text-white transition-colors">
+                <a
+                  href="#engine"
+                  onClick={() => trackNav('engine', 'footer', currentPath())}
+                  className="text-sm text-stone-400 hover:text-white transition-colors"
+                >
                   Engine
                 </a>
               </li>
               <li>
-                <a href="#ios" className="text-sm text-stone-400 hover:text-white transition-colors">
+                <a
+                  href="#ios"
+                  onClick={() => trackNav('ios', 'footer', currentPath())}
+                  className="text-sm text-stone-400 hover:text-white transition-colors"
+                >
                   iOS
                 </a>
               </li>
               <li>
-                <a href="#download" className="text-sm text-stone-400 hover:text-white transition-colors">
+                <a
+                  href="#download"
+                  onClick={() => trackNav('download', 'footer', currentPath())}
+                  className="text-sm text-stone-400 hover:text-white transition-colors"
+                >
                   Download
                 </a>
               </li>
@@ -48,9 +70,10 @@ export function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <a
-                  href="https://github.com/gopgp/ios"
+                  href={GITHUB_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackCta('github', 'footer', GITHUB_URL)}
                   className="inline-flex items-center gap-1.5 text-sm text-stone-400 hover:text-white transition-colors"
                 >
                   <Github className="w-3.5 h-3.5" />
@@ -58,13 +81,18 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/privacy" className="text-sm text-stone-400 hover:text-white transition-colors">
+                <a
+                  href="/privacy"
+                  onClick={() => trackNav('privacy', 'footer', currentPath())}
+                  className="text-sm text-stone-400 hover:text-white transition-colors"
+                >
                   Privacy Policy
                 </a>
               </li>
               <li>
                 <a
                   href="/support"
+                  onClick={() => trackNav('support', 'footer', currentPath())}
                   className="text-sm text-stone-400 hover:text-white transition-colors"
                 >
                   Support
@@ -81,9 +109,10 @@ export function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <a
-                  href="https://bright-eu.com"
+                  href={BRIGHT_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackOutbound(BRIGHT_URL, 'BRIGHT EUROPE', 'footer')}
                   className="text-sm text-stone-400 hover:text-white transition-colors"
                 >
                   BRIGHT EUROPE
@@ -98,9 +127,10 @@ export function Footer() {
             <p>
               &copy; {new Date().getFullYear()}{' '}
               <a
-                href="https://bright-eu.com"
+                href={BRIGHT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackOutbound(BRIGHT_URL, 'BRIGHT EUROPE SRL UNIPERSONALE', 'footer')}
                 className="text-stone-400 hover:text-white transition-colors"
               >
                 BRIGHT EUROPE SRL UNIPERSONALE
@@ -112,9 +142,10 @@ export function Footer() {
           <p className="text-xs text-stone-500">
             goPGP is licensed under{' '}
             <a
-              href="https://www.gnu.org/licenses/gpl-3.0.html"
+              href={GPL_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackOutbound(GPL_URL, 'GPLv3', 'footer')}
               className="text-stone-400 hover:text-white transition-colors"
             >
               GPLv3

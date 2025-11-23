@@ -1,5 +1,9 @@
 import { Github, Scale, Code2, ExternalLink } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useAnalytics } from '@/lib/analytics'
+import { useSectionView } from '@/lib/useSectionView'
+
+const GITHUB_URL = 'https://github.com/gopgp/ios'
 
 interface OSItem {
   icon: ReactNode
@@ -29,8 +33,11 @@ const items: OSItem[] = [
 ]
 
 export function OpenSource() {
+  const ref = useSectionView<HTMLElement>('open_source')
+  const { trackCta } = useAnalytics()
   return (
     <section
+      ref={ref}
       id="open-source"
       data-bg-light="light"
       data-bg-dark="dark"
@@ -52,9 +59,10 @@ export function OpenSource() {
             </p>
 
             <a
-              href="https://github.com/gopgp/ios"
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackCta('github', 'open_source', GITHUB_URL)}
               className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-900 font-medium transition-colors"
             >
               <Github className="w-5 h-5" />

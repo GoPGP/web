@@ -6,6 +6,7 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useSectionView } from '@/lib/useSectionView'
 
 interface EngineItem {
   icon: ReactNode
@@ -41,8 +42,10 @@ const items: EngineItem[] = [
 ]
 
 export function Engine() {
+  const ref = useSectionView<HTMLElement>('engine')
   return (
     <section
+      ref={ref}
       id="engine"
       data-bg-light="dark"
       data-bg-dark="dark"

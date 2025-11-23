@@ -1,6 +1,7 @@
 import { Shield, ArrowLeft } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Footer } from './Footer'
+import { useAnalytics } from '@/lib/analytics'
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -16,17 +17,23 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 export function PrivacyPolicy() {
+  const { trackNav, trackContact } = useAnalytics()
   return (
     <div className="min-h-screen bg-white dark:bg-stone-950">
       <header className="bg-stone-900 dark:bg-stone-50 border-b border-stone-800 dark:border-stone-200 sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center gap-2">
+            <a
+              href="/"
+              onClick={() => trackNav('home', 'header', '/privacy')}
+              className="flex items-center gap-2"
+            >
               <Shield className="w-5 h-5 text-emerald-400 dark:text-emerald-600" />
               <span className="text-base font-bold text-stone-50 dark:text-stone-900">goPGP</span>
             </a>
             <a
               href="/"
+              onClick={() => trackNav('home', 'header', '/privacy')}
               className="inline-flex items-center gap-1.5 text-sm text-stone-300 dark:text-stone-600 hover:text-white dark:hover:text-stone-900 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -82,17 +89,70 @@ export function PrivacyPolicy() {
           </ul>
         </Section>
 
-        <Section title="No Analytics or Tracking">
+        <Section title="No Analytics or Tracking in the App">
           <p>
-            goPGP contains no analytics, telemetry, advertising SDKs, or
-            third-party tracking of any kind.
+            The goPGP iOS app contains no analytics, telemetry, advertising
+            SDKs, or third-party tracking of any kind.
           </p>
         </Section>
 
-        <Section title="No Third-Party Services">
+        <Section title="No Third-Party Services in the App">
           <p>
             goPGP does not integrate with any third-party services beyond the
             optional keyserver lookup described above.
+          </p>
+        </Section>
+
+        <Section title="This Website (gopgp.org)">
+          <p>
+            This marketing website uses{' '}
+            <a
+              href="https://posthog.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
+            >
+              PostHog
+            </a>{' '}
+            (EU&nbsp;Cloud, hosted in Frankfurt) to measure aggregate visitor
+            interest &mdash; pageviews, scroll depth, button clicks, navigation
+            patterns. We do this to understand which pages and links are useful,
+            so we can improve them.
+          </p>
+          <p>
+            <strong className="text-stone-900 dark:text-stone-100">
+              Cookieless by design.
+            </strong>{' '}
+            PostHog is configured with{' '}
+            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
+              persistence: &quot;memory&quot;
+            </code>
+            . No cookies, no localStorage, no fingerprinting. An anonymous
+            visitor identifier is generated fresh on every page load and lives
+            only in browser memory; it is discarded the moment you close the
+            tab. That means no cross-session tracking and no consent banner
+            required under GDPR/ePrivacy.
+          </p>
+          <p>
+            <strong className="text-stone-900 dark:text-stone-100">
+              No identifying data.
+            </strong>{' '}
+            We never collect names, emails, IP addresses we can resolve back to
+            you, form input, or session recordings. Only the events listed
+            above, with the page path and timestamps.
+          </p>
+          <p>
+            We honour the{' '}
+            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
+              Sec-GPC
+            </code>{' '}
+            and{' '}
+            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
+              DNT
+            </code>{' '}
+            (Do Not Track) headers &mdash; if your browser sends either, no
+            events are recorded for your visit. None of this applies to the
+            goPGP iOS app, which remains analytics-free.
           </p>
         </Section>
 
@@ -101,6 +161,7 @@ export function PrivacyPolicy() {
             If you have questions about this privacy policy, contact us at{' '}
             <a
               href="mailto:contact@gopgp.org"
+              onClick={() => trackContact('privacy')}
               className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
             >
               contact@gopgp.org

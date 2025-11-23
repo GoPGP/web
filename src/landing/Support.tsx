@@ -1,6 +1,9 @@
 import { Shield, ArrowLeft, Github, Mail } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Footer } from './Footer'
+import { useAnalytics } from '@/lib/analytics'
+
+const ISSUES_URL = 'https://github.com/gopgp/ios/issues'
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -29,17 +32,23 @@ function FaqItem({ question, children }: { question: string; children: ReactNode
 }
 
 export function Support() {
+  const { trackNav, trackOutbound } = useAnalytics()
   return (
     <div className="min-h-screen bg-white dark:bg-stone-950">
       <header className="bg-stone-900 dark:bg-stone-50 border-b border-stone-800 dark:border-stone-200 sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center gap-2">
+            <a
+              href="/"
+              onClick={() => trackNav('home', 'header', '/support')}
+              className="flex items-center gap-2"
+            >
               <Shield className="w-5 h-5 text-emerald-400 dark:text-emerald-600" />
               <span className="text-base font-bold text-stone-50 dark:text-stone-900">goPGP</span>
             </a>
             <a
               href="/"
+              onClick={() => trackNav('home', 'header', '/support')}
               className="inline-flex items-center gap-1.5 text-sm text-stone-300 dark:text-stone-600 hover:text-white dark:hover:text-stone-900 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -69,9 +78,10 @@ export function Support() {
                 <div className="text-sm">
                   Report bugs or request features at{' '}
                   <a
-                    href="https://github.com/gopgp/ios/issues"
+                    href={ISSUES_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackOutbound(ISSUES_URL, 'github.com/gopgp/ios/issues', 'support')}
                     className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
                   >
                     github.com/gopgp/ios/issues
@@ -129,6 +139,7 @@ export function Support() {
                 telemetry, and no third-party SDKs. See the{' '}
                 <a
                   href="/privacy"
+                  onClick={() => trackNav('privacy', 'footer', '/support')}
                   className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
                 >
                   Privacy Policy
@@ -144,9 +155,10 @@ export function Support() {
                 Lightning/USB-C, and integrating it cleanly with GopenPGP is on
                 the roadmap rather than shipped. Track progress on the{' '}
                 <a
-                  href="https://github.com/gopgp/ios/issues"
+                  href={ISSUES_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackOutbound(ISSUES_URL, 'goPGP iOS issue tracker', 'support')}
                   className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
                 >
                   goPGP iOS issue tracker

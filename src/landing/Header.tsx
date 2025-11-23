@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, Shield } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
 
 const navLinks = [
-  { label: 'Engine', href: '#engine' },
-  { label: 'iOS', href: '#ios' },
-  { label: 'Open Source', href: '#open-source' },
-  { label: 'Download', href: '#download' },
+  { label: 'Engine', href: '#engine', target: 'engine' },
+  { label: 'iOS', href: '#ios', target: 'ios' },
+  { label: 'Open Source', href: '#open-source', target: 'open_source' },
+  { label: 'Download', href: '#download', target: 'download' },
 ]
+
+const currentPath = () =>
+  typeof window !== 'undefined' ? window.location.pathname : '/'
 
 type Polarity = 'dark' | 'light'
 
@@ -25,6 +29,13 @@ export function Header() {
   const [activeBg, setActiveBg] = useState<Polarity>('dark')
   const [menuOpen, setMenuOpen] = useState(false)
   const activeRef = useRef<Element | null>(null)
+  const { trackNav, trackMenu } = useAnalytics()
+
+  const toggleMenu = () => {
+    const next = !menuOpen
+    setMenuOpen(next)
+    trackMenu(next ? 'opened' : 'closed')
+  }
 
   useEffect(() => {
     const sections = Array.from(
@@ -87,7 +98,11 @@ export function Header() {
     >
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <a href="#" className="flex items-center gap-2 group">
+          <a
+            href="#"
+            onClick={() => trackNav('top', 'header', currentPath())}
+            className="flex items-center gap-2 group"
+          >
             <Shield className={`w-6 h-6 transition-transform group-hover:scale-110 ${cls.shield}`} />
             <span className={`text-lg font-bold ${cls.logo}`}>
               goPGP
@@ -99,6 +114,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={() => trackNav(link.target, 'header', currentPath())}
                 className={`text-sm font-medium transition-colors ${cls.nav}`}
               >
                 {link.label}
@@ -109,7 +125,7 @@ export function Header() {
           <div className="flex items-center gap-2 md:hidden">
             <button
               className={`p-2 transition-colors ${cls.hamburger}`}
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={toggleMenu}
               aria-label="Toggle menu"
             >
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -126,7 +142,10 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${cls.mobileLink}`}
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  trackNav(link.target, 'menu', currentPath())
+                  setMenuOpen(false)
+                }}
               >
                 {link.label}
               </a>

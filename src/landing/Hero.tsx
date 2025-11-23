@@ -1,8 +1,15 @@
 import { Github, ExternalLink } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
+import { useSectionView } from '@/lib/useSectionView'
+
+const GITHUB_URL = 'https://github.com/gopgp/ios'
 
 export function Hero() {
+  const ref = useSectionView<HTMLElement>('hero')
+  const { trackCta } = useAnalytics()
   return (
     <section
+      ref={ref}
       data-bg-light="dark"
       data-bg-dark="dark"
       className="relative min-h-screen flex items-center bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 overflow-hidden"
@@ -36,6 +43,7 @@ export function Hero() {
             <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
               <a
                 href="#download"
+                onClick={() => trackCta('app_store', 'hero', '#download')}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors shadow-lg shadow-emerald-600/25"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -44,9 +52,10 @@ export function Hero() {
                 Coming to App Store
               </a>
               <a
-                href="https://github.com/gopgp/ios"
+                href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackCta('github', 'hero', GITHUB_URL)}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-stone-700 hover:border-stone-500 text-stone-300 hover:text-white font-medium transition-colors"
               >
                 <Github className="w-5 h-5" />

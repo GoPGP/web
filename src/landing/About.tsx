@@ -1,8 +1,16 @@
 import { Building2, Mail, ExternalLink } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
+import { useSectionView } from '@/lib/useSectionView'
+
+const BRIGHT_URL = 'https://bright-eu.com'
+const CONTACT_EMAIL = 'mailto:contact@gopgp.org'
 
 export function About() {
+  const ref = useSectionView<HTMLElement>('about')
+  const { trackCta, trackOutbound, trackContact } = useAnalytics()
   return (
     <section
+      ref={ref}
       id="download"
       data-bg-light="light"
       data-bg-dark="dark"
@@ -15,14 +23,21 @@ export function About() {
           </h2>
           <p className="mt-4 text-lg text-stone-600 dark:text-stone-400">
             An open-source project published by{' '}
-            <a href="https://bright-eu.com" target="_blank" rel="noopener noreferrer" className="text-stone-900 dark:text-stone-100 underline underline-offset-2">BRIGHT&nbsp;EUROPE</a>.
+            <a
+              href={BRIGHT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackOutbound(BRIGHT_URL, 'BRIGHT EUROPE', 'about')}
+              className="text-stone-900 dark:text-stone-100 underline underline-offset-2"
+            >BRIGHT&nbsp;EUROPE</a>.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://bright-eu.com"
+              href={BRIGHT_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackOutbound(BRIGHT_URL, 'bright-eu.com', 'about')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-500 font-medium transition-colors"
             >
               <Building2 className="w-4 h-4" />
@@ -30,7 +45,8 @@ export function About() {
               <ExternalLink className="w-3.5 h-3.5 opacity-50" />
             </a>
             <a
-              href="mailto:contact@gopgp.org"
+              href={CONTACT_EMAIL}
+              onClick={() => trackContact('about')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-500 font-medium transition-colors"
             >
               <Mail className="w-4 h-4" />
@@ -47,6 +63,7 @@ export function About() {
             <div className="mt-6">
               <a
                 href="#"
+                onClick={() => trackCta('app_store', 'about', '#')}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium backdrop-blur-sm transition-colors"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

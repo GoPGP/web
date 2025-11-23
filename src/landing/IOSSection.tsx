@@ -5,6 +5,8 @@ import {
   Clipboard,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useAnalytics } from '@/lib/analytics'
+import { useSectionView } from '@/lib/useSectionView'
 
 interface Feature {
   icon: ReactNode
@@ -50,8 +52,11 @@ const screenshots = [
 ]
 
 export function IOSSection() {
+  const ref = useSectionView<HTMLElement>('ios')
+  const { trackCta } = useAnalytics()
   return (
     <section
+      ref={ref}
       id="ios"
       data-bg-light="light"
       data-bg-dark="dark"
@@ -133,6 +138,7 @@ export function IOSSection() {
         <div className="text-center">
           <a
             href="#download"
+            onClick={() => trackCta('app_store', 'ios', '#download')}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors shadow-lg shadow-emerald-600/25"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
