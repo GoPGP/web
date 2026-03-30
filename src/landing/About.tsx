@@ -3,7 +3,7 @@ import { useAnalytics } from '@/lib/analytics'
 import { useSectionView } from '@/lib/useSectionView'
 
 const BRIGHT_URL = 'https://bright-eu.com'
-const CONTACT_EMAIL = 'mailto:contact@gopgp.org'
+const CONTACT_EMAIL = 'mailto:support@gopgp.org'
 
 export function About() {
   const ref = useSectionView<HTMLElement>('about')
@@ -50,7 +50,7 @@ export function About() {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-500 font-medium transition-colors"
             >
               <Mail className="w-4 h-4" />
-              contact@gopgp.org
+              support@gopgp.org
             </a>
           </div>
 

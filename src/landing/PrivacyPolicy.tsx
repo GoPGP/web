@@ -160,11 +160,11 @@ export function PrivacyPolicy() {
           <p>
             If you have questions about this privacy policy, contact us at{' '}
             <a
-              href="mailto:contact@gopgp.org"
+              href="mailto:support@gopgp.org"
               onClick={() => trackContact('privacy')}
               className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
             >
-              contact@gopgp.org
+              support@gopgp.org
             </a>
             .
           </p>

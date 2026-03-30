@@ -97,7 +97,7 @@ export function Support() {
                   Email
                 </div>
                 <div className="text-sm">
-                  For private matters: <span className="font-mono">contact@gopgp.org</span>
+                  For private matters: <span className="font-mono">support@gopgp.org</span>
                 </div>
               </div>
             </li>
