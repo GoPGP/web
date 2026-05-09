@@ -1,17 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import type { ReactNode } from 'react'
 
 const trackMock = vi.fn()
 const posthogCaptureMock = vi.fn()
+const getPostHogMock = vi.fn()
 
 vi.mock('@plausible-analytics/tracker/plausible.js', () => ({
   track: (...args: unknown[]) => trackMock(...args),
 }))
 
-vi.mock('posthog-js/react', () => ({
-  PostHogProvider: ({ children }: { children: ReactNode }) => children,
-  usePostHog: () => ({ capture: posthogCaptureMock }),
+vi.mock('./posthog', () => ({
+  getPostHog: (...args: unknown[]) => getPostHogMock(...args),
 }))
 
 import { useAnalytics } from './analytics'
@@ -19,9 +18,14 @@ import { useAnalytics } from './analytics'
 beforeEach(() => {
   trackMock.mockClear()
   posthogCaptureMock.mockClear()
+  getPostHogMock.mockReset()
 })
 
 describe('useAnalytics — Plausible payload', () => {
+  beforeEach(() => {
+    getPostHogMock.mockReturnValue(null)
+  })
+
   it('trackCta sends cta_clicked with name, location, href', () => {
     const { result } = renderHook(() => useAnalytics())
     act(() => result.current.trackCta('app_store', 'hero', '#download'))
@@ -104,9 +108,14 @@ describe('useAnalytics — Plausible payload', () => {
 })
 
 describe('useAnalytics — PostHog dual-tracking', () => {
-  it('trackCta forwards same event to PostHog with raw props', () => {
+  it('forwards to PostHog asynchronously after the SDK promise resolves', async () => {
+    getPostHogMock.mockReturnValue(
+      Promise.resolve({ capture: posthogCaptureMock }),
+    )
     const { result } = renderHook(() => useAnalytics())
     act(() => result.current.trackCta('github', 'about', 'https://github.com/GoPGP'))
+    await Promise.resolve()
+    await Promise.resolve()
     expect(posthogCaptureMock).toHaveBeenCalledWith('cta_clicked', {
       name: 'github',
       location: 'about',
@@ -114,16 +123,35 @@ describe('useAnalytics — PostHog dual-tracking', () => {
     })
   })
 
-  it('trackScrollDepth forwards numeric depth to PostHog (no string coercion)', () => {
+  it('forwards numeric depth to PostHog without string coercion', async () => {
+    getPostHogMock.mockReturnValue(
+      Promise.resolve({ capture: posthogCaptureMock }),
+    )
     const { result } = renderHook(() => useAnalytics())
     act(() => result.current.trackScrollDepth(75))
+    await Promise.resolve()
+    await Promise.resolve()
     expect(posthogCaptureMock).toHaveBeenCalledWith('scroll_depth', { depth: 75 })
   })
 
-  it('both trackers receive every event', () => {
+  it('skips PostHog entirely when getPostHog returns null (dev mode)', async () => {
+    getPostHogMock.mockReturnValue(null)
     const { result } = renderHook(() => useAnalytics())
     act(() => result.current.trackSection('hero'))
+    await Promise.resolve()
+    await Promise.resolve()
+    expect(posthogCaptureMock).not.toHaveBeenCalled()
     expect(trackMock).toHaveBeenCalledTimes(1)
-    expect(posthogCaptureMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('swallows posthog SDK load errors without affecting Plausible', async () => {
+    getPostHogMock.mockReturnValue(Promise.reject(new Error('network down')))
+    const { result } = renderHook(() => useAnalytics())
+    expect(() =>
+      act(() => result.current.trackContact('about')),
+    ).not.toThrow()
+    await Promise.resolve()
+    await Promise.resolve()
+    expect(trackMock).toHaveBeenCalledTimes(1)
   })
 })
