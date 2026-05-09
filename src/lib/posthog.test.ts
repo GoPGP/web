@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const initMock = vi.fn()
 const captureMock = vi.fn()
@@ -10,10 +10,37 @@ vi.mock('posthog-js', () => ({
 
 import { getPostHog, resetPostHogForTest } from './posthog'
 
+const originalDnt = Object.getOwnPropertyDescriptor(Navigator.prototype, 'doNotTrack')
+
+function setDnt(value: string | null) {
+  Object.defineProperty(navigator, 'doNotTrack', {
+    configurable: true,
+    get: () => value,
+  })
+}
+
+function setGpc(value: boolean | undefined) {
+  if (value === undefined) {
+    // @ts-expect-error globalPrivacyControl is non-standard
+    delete navigator.globalPrivacyControl
+    return
+  }
+  Object.defineProperty(navigator, 'globalPrivacyControl', {
+    configurable: true,
+    get: () => value,
+  })
+}
+
 beforeEach(() => {
   initMock.mockClear()
   captureMock.mockClear()
   resetPostHogForTest()
+  setDnt(null)
+  setGpc(undefined)
+})
+
+afterEach(() => {
+  if (originalDnt) Object.defineProperty(Navigator.prototype, 'doNotTrack', originalDnt)
 })
 
 describe('getPostHog', () => {
@@ -51,5 +78,25 @@ describe('getPostHog', () => {
   it('returns null even after a prior enabled call when later called with disabled', async () => {
     await getPostHog(true)
     expect(getPostHog(false)).toBeNull()
+  })
+
+  it('returns null when navigator.doNotTrack is "1" (DNT signal)', () => {
+    setDnt('1')
+    expect(getPostHog(true)).toBeNull()
+    expect(initMock).not.toHaveBeenCalled()
+  })
+
+  it('returns null when navigator.globalPrivacyControl is true (Sec-GPC signal)', () => {
+    setGpc(true)
+    expect(getPostHog(true)).toBeNull()
+    expect(initMock).not.toHaveBeenCalled()
+  })
+
+  it('still loads when DNT is "0" or unset', async () => {
+    setDnt('0')
+    const promise = getPostHog(true)
+    expect(promise).not.toBeNull()
+    await promise
+    expect(initMock).toHaveBeenCalledTimes(1)
   })
 })
