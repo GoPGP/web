@@ -1,16 +1,20 @@
 # goPGP
 
-**Open-source PGP encryption for mobile.**
+**OpenPGP for iPhone and iPad — the missing free GPG app for Apple's ecosystem.**
 
-Encrypt, decrypt, sign and verify on iOS and Android — powered by [GopenPGP](https://github.com/ProtonMail/gopenpgp), the same audited crypto engine used by Proton Mail.
+Android has had OpenKeychain for years. iOS had nothing that handled modern GPG 2.4+ keys — AEAD, Argon2, X25519. goPGP fixes that. Crypto engine: [GopenPGP](https://github.com/ProtonMail/gopenpgp), Proton's audited OpenPGP library — the same one Proton Mail uses. No backend, no telemetry, no clouds; keys never leave your device.
 
-## What you can do
+goPGP succeeds [PGPro](https://github.com/lucanaef/PGPro), Luca Naef's GPLv3 PGP app for iOS. PGPro bloomed from 2019 to 2022, left the App Store in early 2025, and no longer runs well on modern iOS.
 
-- 🔐 **Encrypt & decrypt** messages and files with PGP keys
-- ✍️ **Sign & verify** to prove authorship and detect tampering
-- 📱 **Mobile-first** — built for iOS and Android, not a desktop port
-- 🆓 **Free and open-source** under GPL-3.0
-- 🛡️ **Audited crypto engine** — GopenPGP, used in production by Proton Mail
+## What it does
+
+- **Encrypt & decrypt** messages and files with PGP keys
+- **Sign & verify** to prove authorship and detect tampering
+- **Modern GPG 2.4+** — AEAD (AES-256-OCB), Argon2, X25519 ECDH
+- **Share Extension** — encrypt or decrypt directly from Safari, Mail, or any app
+- **Shortcuts & Siri** — encrypt, decrypt, sign, and verify from iOS Shortcuts
+- **Biometric protection** — optional Face ID / Touch ID gate for private key operations
+- **Free and open-source** under GPL-3.0
 
 ## Status
 
