@@ -7,6 +7,11 @@ vi.mock('@plausible-analytics/tracker/plausible.js', () => ({
   track: vi.fn(),
 }))
 
+vi.mock('posthog-js/react', () => ({
+  PostHogProvider: ({ children }: { children: React.ReactNode }) => children,
+  usePostHog: () => undefined,
+}))
+
 afterEach(() => {
   cleanup()
 })

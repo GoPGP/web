@@ -1,19 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
+import type { ReactNode } from 'react'
 
 const trackMock = vi.fn()
+const posthogCaptureMock = vi.fn()
 
 vi.mock('@plausible-analytics/tracker/plausible.js', () => ({
   track: (...args: unknown[]) => trackMock(...args),
+}))
+
+vi.mock('posthog-js/react', () => ({
+  PostHogProvider: ({ children }: { children: ReactNode }) => children,
+  usePostHog: () => ({ capture: posthogCaptureMock }),
 }))
 
 import { useAnalytics } from './analytics'
 
 beforeEach(() => {
   trackMock.mockClear()
+  posthogCaptureMock.mockClear()
 })
 
-describe('useAnalytics', () => {
+describe('useAnalytics — Plausible payload', () => {
   it('trackCta sends cta_clicked with name, location, href', () => {
     const { result } = renderHook(() => useAnalytics())
     act(() => result.current.trackCta('app_store', 'hero', '#download'))
@@ -92,5 +100,30 @@ describe('useAnalytics', () => {
     expect(trackMock).toHaveBeenCalledWith('scroll_depth', {
       props: { depth: '50' },
     })
+  })
+})
+
+describe('useAnalytics — PostHog dual-tracking', () => {
+  it('trackCta forwards same event to PostHog with raw props', () => {
+    const { result } = renderHook(() => useAnalytics())
+    act(() => result.current.trackCta('github', 'about', 'https://github.com/GoPGP'))
+    expect(posthogCaptureMock).toHaveBeenCalledWith('cta_clicked', {
+      name: 'github',
+      location: 'about',
+      href: 'https://github.com/GoPGP',
+    })
+  })
+
+  it('trackScrollDepth forwards numeric depth to PostHog (no string coercion)', () => {
+    const { result } = renderHook(() => useAnalytics())
+    act(() => result.current.trackScrollDepth(75))
+    expect(posthogCaptureMock).toHaveBeenCalledWith('scroll_depth', { depth: 75 })
+  })
+
+  it('both trackers receive every event', () => {
+    const { result } = renderHook(() => useAnalytics())
+    act(() => result.current.trackSection('hero'))
+    expect(trackMock).toHaveBeenCalledTimes(1)
+    expect(posthogCaptureMock).toHaveBeenCalledTimes(1)
   })
 })
