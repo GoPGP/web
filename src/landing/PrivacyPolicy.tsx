@@ -107,30 +107,24 @@ export function PrivacyPolicy() {
           <p>
             This marketing website uses{' '}
             <a
-              href="https://posthog.com"
+              href="https://plausible.io"
               target="_blank"
               rel="noopener noreferrer"
               className="text-emerald-600 dark:text-emerald-400 underline underline-offset-2"
             >
-              PostHog
+              Plausible Analytics
             </a>{' '}
-            (EU&nbsp;Cloud, hosted in Frankfurt) to measure aggregate visitor
-            interest &mdash; pageviews, scroll depth, button clicks, navigation
-            patterns. We do this to understand which pages and links are useful,
-            so we can improve them.
+            to measure aggregate visitor interest &mdash; pageviews, scroll
+            depth, button clicks, navigation patterns. We do this to understand
+            which pages and links are useful, so we can improve them.
           </p>
           <p>
             <strong className="text-stone-900 dark:text-stone-100">
               Cookieless by design.
             </strong>{' '}
-            PostHog is configured with{' '}
-            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
-              persistence: &quot;memory&quot;
-            </code>
-            . No cookies, no localStorage, no fingerprinting. An anonymous
-            visitor identifier is generated fresh on every page load and lives
-            only in browser memory; it is discarded the moment you close the
-            tab. That means no cross-session tracking and no consent banner
+            Plausible sets no cookies, writes no localStorage, and does no
+            cross-site fingerprinting. No persistent identifier is created and
+            no cross-session tracking takes place, so no consent banner is
             required under GDPR/ePrivacy.
           </p>
           <p>
@@ -139,20 +133,8 @@ export function PrivacyPolicy() {
             </strong>{' '}
             We never collect names, emails, IP addresses we can resolve back to
             you, form input, or session recordings. Only the events listed
-            above, with the page path and timestamps.
-          </p>
-          <p>
-            We honour the{' '}
-            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
-              Sec-GPC
-            </code>{' '}
-            and{' '}
-            <code className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-sm font-mono">
-              DNT
-            </code>{' '}
-            (Do Not Track) headers &mdash; if your browser sends either, no
-            events are recorded for your visit. None of this applies to the
-            goPGP iOS app, which remains analytics-free.
+            above, with the page path and timestamps. None of this applies to
+            the goPGP iOS app, which remains analytics-free.
           </p>
         </Section>
 
